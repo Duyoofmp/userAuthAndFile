@@ -1,26 +1,29 @@
-// app.js
 const express = require('express');
 const app = express();
-const authRoutes = require('./routes/authRoutes');
-const multer = require('multer');
-const validateFile = require('./controllers/fileValidation');
-const uploadFile = require('./controllers/uploadController.');
+const connectDB = require('./src/database/index');
+const authRoutes = require('./src/authentication/routes/authRoutes');
+const crudRoutes = require('./src/crud/routes/crudRoutes');
+const fileRoutes = require('./src/file/routes/fileRoutes');
+const config = require('./src/config');
+const swaggerUi = require('swagger-ui-express');
 
+const swagger=require('./swagger.json')
 
-const upload = multer({ dest: 'uploads/' });
+// Connect to MongoDB database
+connectDB();
 
 // Middleware
-
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
+// Routes
+app.use('/auth', authRoutes);
+app.use('/crud', crudRoutes);
+app.use('/file', fileRoutes);
 
-app.post('/api/upload', upload.single('file'), validateFile, uploadFile);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swagger));
 
-// File Download Endpoint
-app.get('/api/download/:filename', downloadFile);
-
-const PORT = process.env.PORT || 3000;
+// Start the server
+const PORT = config.port || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

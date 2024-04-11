@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-      "title": "Your API Title",
-      "description": "Description of your API",
+      "title": "Task 2",
+      "description": "User Authentication with JWT,Simple CRUD API,File Upload and Download API",
       "version": "1.0.0"
     },
     "servers": [
